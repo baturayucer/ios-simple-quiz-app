@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet var progressBar: UIView!
     @IBOutlet weak var progressLabel: UILabel!
-    var indexofQuestions = -1
+    var indexofQuestions = 0
     var score = 0
     
     override func viewDidLoad() {
@@ -48,11 +48,12 @@ class ViewController: UIViewController {
         }
         scoreLabel.text = "Score: \(score)"
         progressLabel.text = "\(indexofQuestions + 1) / \(allQuestions.list.count)"
+        progressBar.frame.size.width = (progressBar.frame.size.width / 13) * CGFloat(indexofQuestions + 1)
     }
     
 
     func nextQuestion() {
-        indexofQuestions += 1
+        
         if indexofQuestions <= allQuestions.list.count - 1 {
             questionLabel.text = allQuestions.list[indexofQuestions].questionText
         } else {
@@ -66,13 +67,14 @@ class ViewController: UIViewController {
 
         if allQuestions.list[indexofQuestions].answer == pickedAnswer {
             //showAlertMessage(title: "Awesome!", message: "Your answer is Right", actiontitle: "next question")
-            updateUI(answer: true)
             print("Question.\(indexofQuestions+1) score:",score)
-            
+            indexofQuestions += 1
+            updateUI(answer: true)
         }else {
             //showAlertMessage(title: "Oh!", message: "Your  answer is wrong!", actiontitle: "next question")
-            updateUI(answer: false)
             print("Question.\(indexofQuestions+1) score:",score)
+            indexofQuestions += 1
+            updateUI(answer: false)            
         }
 
     }
