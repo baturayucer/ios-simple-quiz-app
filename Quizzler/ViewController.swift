@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         }
         scoreLabel.text = "Score: \(score)"
         progressLabel.text = "\(indexofQuestions + 1) / \(allQuestions.list.count)"
-        progressBar.frame.size.width = (progressBar.frame.size.width / 13) * CGFloat(indexofQuestions + 1)
+        progressBar.frame.size.width = (view.frame.size.width / CGFloat(allQuestions.list.count)) * CGFloat(indexofQuestions + 1)
     }
     
 
@@ -57,7 +57,8 @@ class ViewController: UIViewController {
         if indexofQuestions <= allQuestions.list.count - 1 {
             questionLabel.text = allQuestions.list[indexofQuestions].questionText
         } else {
-            startOver()
+            showAlertMessage(title: "Score: \(score) ", message: "Game is ended. Would you like to replay?", actiontitle: "yes")
+            //startOver()
         }
         
     }
@@ -67,28 +68,28 @@ class ViewController: UIViewController {
 
         if allQuestions.list[indexofQuestions].answer == pickedAnswer {
             //showAlertMessage(title: "Awesome!", message: "Your answer is Right", actiontitle: "next question")
-            print("Question.\(indexofQuestions+1) score:",score)
             indexofQuestions += 1
             updateUI(answer: true)
         }else {
             //showAlertMessage(title: "Oh!", message: "Your  answer is wrong!", actiontitle: "next question")
-            print("Question.\(indexofQuestions+1) score:",score)
             indexofQuestions += 1
-            updateUI(answer: false)            
+            updateUI(answer: false)
         }
 
     }
     
     func showAlertMessage(title: String,message: String,actiontitle: String) {
         let alert1 = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let restartAction1 = UIAlertAction(title: actiontitle, style: .default)
+        let restartAction1 = UIAlertAction(title: actiontitle, style: .default){ (action:UIAlertAction) in
+            self.startOver()
+        }
         alert1.addAction(restartAction1)
         present(alert1, animated: true, completion: nil)
     }
     
     
     func startOver() {
-        showAlertMessage(title: "Score: \(score) ", message: "Game is ended. Would you like to replay?", actiontitle: "yes")
+
         indexofQuestions = 0
         score = 0
         updateUI(answer: false)
