@@ -46,8 +46,8 @@ class ViewController: UIViewController {
         if(answer == true) {
             score += 1
         }
-        scoreLabel.text = "Scorea: \(score)"
-        progressLabel.text = "\(score) / \(allQuestions.list.count)"
+        scoreLabel.text = "Score: \(score)"
+        progressLabel.text = "\(indexofQuestions + 1) / \(allQuestions.list.count)"
     }
     
 
