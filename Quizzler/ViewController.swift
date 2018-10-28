@@ -18,11 +18,13 @@ class ViewController: UIViewController {
     @IBOutlet var progressBar: UIView!
     @IBOutlet weak var progressLabel: UILabel!
     var indexofQuestions = -1
+    var score = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    nextQuestion()
+        updateUI(answer: false)
+        nextQuestion()
         
     }
 
@@ -40,8 +42,11 @@ class ViewController: UIViewController {
 
     }
     
-    func updateUI() {
-      
+    func updateUI(answer: Bool) {
+        if(answer == true) {
+            score += 1
+        }
+        scoreLabel.text = "Score: \(score)"
     }
     
 
@@ -60,10 +65,13 @@ class ViewController: UIViewController {
 
         if allQuestions.list[indexofQuestions].answer == pickedAnswer {
             //showAlertMessage(title: "Awesome!", message: "Your answer is Right", actiontitle: "next question")
-            print("\(indexofQuestions + 1).correct")
+            updateUI(answer: true)
+            print("Question.\(indexofQuestions+1) score:",score)
+            
         }else {
             //showAlertMessage(title: "Oh!", message: "Your  answer is wrong!", actiontitle: "next question")
-            print("\(indexofQuestions + 1).wrong")
+            updateUI(answer: false)
+            print("Question.\(indexofQuestions+1) score:",score)
         }
 
     }
@@ -77,11 +85,11 @@ class ViewController: UIViewController {
     
     
     func startOver() {
-        showAlertMessage(title: "End of the game", message: "Game is ended. Would you like to replay?", actiontitle: "yes")
+        showAlertMessage(title: "Score: \(score) ", message: "Game is ended. Would you like to replay?", actiontitle: "yes")
         indexofQuestions = 0
+        score = 0
+        updateUI(answer: false)
         questionLabel.text = allQuestions.list[indexofQuestions].questionText
     }
-    
-
     
 }
