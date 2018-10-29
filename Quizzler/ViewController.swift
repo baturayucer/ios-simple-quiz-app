@@ -22,10 +22,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         updateUI(answer: false)
         nextQuestion()
-        
     }
 
 
@@ -57,7 +55,8 @@ class ViewController: UIViewController {
         if indexofQuestions <= allQuestions.list.count - 1 {
             questionLabel.text = allQuestions.list[indexofQuestions].questionText
         } else {
-            showAlertMessage(title: "Score: \(score) ", message: "Game is ended. Would you like to replay?", actiontitle: "yes")
+            progressLabel.text = "\(indexofQuestions) / \(allQuestions.list.count)"
+            showAlertMessage(title: "Score: \(score) ", message: "Game is ended. Would you like to start over?", actiontitle: "yes")
             //startOver()
         }
         
@@ -67,11 +66,11 @@ class ViewController: UIViewController {
     func checkAnswer() {
 
         if allQuestions.list[indexofQuestions].answer == pickedAnswer {
-            //showAlertMessage(title: "Awesome!", message: "Your answer is Right", actiontitle: "next question")
+            ProgressHUD.showSuccess("Correct!")
             indexofQuestions += 1
             updateUI(answer: true)
         }else {
-            //showAlertMessage(title: "Oh!", message: "Your  answer is wrong!", actiontitle: "next question")
+            ProgressHUD.showError("Wrong!")
             indexofQuestions += 1
             updateUI(answer: false)
         }
@@ -79,17 +78,16 @@ class ViewController: UIViewController {
     }
     
     func showAlertMessage(title: String,message: String,actiontitle: String) {
-        let alert1 = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let restartAction1 = UIAlertAction(title: actiontitle, style: .default){ (action:UIAlertAction) in
+        let endAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let endAction = UIAlertAction(title: actiontitle, style: .default){ (action:UIAlertAction) in
             self.startOver()
         }
-        alert1.addAction(restartAction1)
-        present(alert1, animated: true, completion: nil)
+        endAlert.addAction(endAction)
+        present(endAlert, animated: true, completion: nil)
     }
     
     
     func startOver() {
-
         indexofQuestions = 0
         score = 0
         updateUI(answer: false)
